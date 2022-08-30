@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+body {
+    font-family: 'Special Elite', cursive;
+    background-color: #a5ddb6;
+}
+
+.navbar-custom {
+    background-color: #75a882;
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color: black;
+}
+
+.navbar-custom .navbar-nav .nav-link:hover {
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+    background-color: #a5ddb6;
+}
+
+#table-padding {
+    padding-top: 20px;
+    padding-right: 40px;
+}
+
+table th {
+    width: 0 !important;
+}
+
+tr>th {
+    border-top: 2px solid black !important;
+    border-bottom: 2px solid black !important;
+}
+
+tr {
+    border-bottom: 2px solid black !important;
+}
