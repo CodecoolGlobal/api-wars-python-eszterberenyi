@@ -3,7 +3,6 @@ const listDiv = document.querySelector('#small-window-list');
 const prev = document.querySelector('#prev');
 const next = document.querySelector('#next');
 let pageNumber = 1;
-const lastPage = 8;
 
 window.addEventListener('resize', function(event){
     if (window.innerWidth < 990) {
@@ -28,66 +27,70 @@ async function getJSON(pageNum=1) {
 
 
 function buildPage(entries) {
-    for (let planet of entries.results) {
-        let tr = document.createElement('tr');
-        tableBody.appendChild(tr);
-        for (let i = 0; i <= 7; i++) {
-            let td = document.createElement('td');
-            let p = document.createElement('p');
-            td.classList.add(`cell${i + 1}`);
-            tr.appendChild(td);
-            listDiv.appendChild(p);
-            if (i === 0) {
-                td.innerText = planet.name;
-                p.innerText = `Name: ${planet.name}`;
-                p.style.fontWeight = 'bold';
-            } else if (i === 1) {
-                if (planet.diameter === 'unknown') {
-                    td.innerText = 'unknown';
-                    p.innerText = 'Diameter: unknown';
-                } else {
-                    td.innerText = `${Number(planet.diameter).toLocaleString()} km`;
-                    p.innerText = `Diameter: ${Number(planet.diameter).toLocaleString()} km`;
+    try {
+        for (let planet of entries.results) {
+            let tr = document.createElement('tr');
+            tableBody.appendChild(tr);
+            for (let i = 0; i <= 7; i++) {
+                let td = document.createElement('td');
+                let p = document.createElement('p');
+                td.classList.add(`cell${i + 1}`);
+                tr.appendChild(td);
+                listDiv.appendChild(p);
+                if (i === 0) {
+                    td.innerText = planet.name;
+                    p.innerText = `Name: ${planet.name}`;
+                    p.style.fontWeight = 'bold';
+                } else if (i === 1) {
+                    if (planet.diameter === 'unknown') {
+                        td.innerText = 'unknown';
+                        p.innerText = 'Diameter: unknown';
+                    } else {
+                        td.innerText = `${Number(planet.diameter).toLocaleString()} km`;
+                        p.innerText = `Diameter: ${Number(planet.diameter).toLocaleString()} km`;
+                    }
+                } else if (i === 2) {
+                    td.innerText = planet.climate;
+                    p.innerText = `Climate: ${planet.climate}`;
+                } else if (i === 3) {
+                    td.innerText = planet.terrain;
+                    p.innerText = `Terrain: ${planet.terrain}`;
+                } else if (i === 4) {
+                    if (planet.surface_water === 'unknown') {
+                        td.innerText = 'unknown';
+                        p.innerText = 'Surface Water: unknown';
+                    } else {
+                        td.innerText = `${planet.surface_water}%`;
+                        p.innerText = `Surface Water: ${planet.surface_water}%`;
+                    }
+                } else if (i === 5) {
+                    if (planet.population === 'unknown') {
+                        td.innerText = 'unknown';
+                        p.innerText = 'Population: unknown';
+                    } else {
+                        td.innerText = `${Number(planet.population).toLocaleString()} people`;
+                        p.innerText = `Population: ${Number(planet.population).toLocaleString()} people`;
+                    }
+                } else if (i === 6) {
+                    if (planet.residents.length === 0) {
+                        td.innerText = 'No known residents';
+                        p.innerText = 'Residents: no known residents';
+                    } else {
+                        td.innerHTML = `<button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark">${planet.residents.length} resident(s)</button>`;
+                        p.innerHTML = `<button>${planet.residents.length} resident(s)</button>`;
+                        p.classList.add('residents');
+                    }
+                } else if (i === 7) {
+                    td.innerHTML = '<button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark">Vote</button>';
+                    p.innerHTML = '<button>Vote</button>';
+                    p.classList.add('vote-btn');
+                    let p2 = document.createElement('p');
+                    listDiv.appendChild(p2);
                 }
-            } else if (i === 2) {
-                td.innerText = planet.climate;
-                p.innerText = `Climate: ${planet.climate}`;
-            } else if (i === 3) {
-                td.innerText = planet.terrain;
-                p.innerText = `Terrain: ${planet.terrain}`;
-            } else if (i === 4) {
-                if (planet.surface_water === 'unknown') {
-                    td.innerText = 'unknown';
-                    p.innerText = 'Surface Water: unknown';
-                } else {
-                    td.innerText = `${planet.surface_water}%`;
-                    p.innerText = `Surface Water: ${planet.surface_water}%`;
-                }
-            } else if (i === 5) {
-                if (planet.population === 'unknown') {
-                    td.innerText = 'unknown';
-                    p.innerText = 'Population :unknown';
-                } else {
-                    td.innerText = `${Number(planet.population).toLocaleString()} people`;
-                    p.innerText = `Population: ${Number(planet.population).toLocaleString()} people`;
-                }
-            } else if (i === 6) {
-                if (planet.residents.length === 0) {
-                    td.innerText = 'No known residents';
-                    p.innerText = 'Residents: no known residents';
-                } else {
-                    td.innerHTML = `<button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark">${planet.residents.length} resident(s)</button>`;
-                    p.innerHTML = `<button>${planet.residents.length} resident(s)</button>`;
-                    p.classList.add('residents');
-                }
-            } else if (i === 7) {
-                td.innerHTML = '<button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark">Vote</button>';
-                p.innerHTML = '<button>Vote</button>';
-                p.classList.add('vote-btn');
-                let p2 = document.createElement('p');
-                listDiv.appendChild(p2);
             }
         }
+    } catch (error) {
+        return;
     }
 }
 
@@ -97,23 +100,30 @@ getJSON().then(entries => {
 
 
 prev.addEventListener('click', () => {
-    if (pageNumber-1 !== 0) {
-        getJSON(pageNumber - 1).then(entries => {
+    let pageNum = parseInt(prev.dataset.page);
+    pageNum -= 1;
+    getJSON(pageNum).then(entries => {
+        if (entries.detail !== 'Not found') {
             tableBody.textContent = '';
             listDiv.textContent = '';
-            pageNumber -= 1;
+            prev.dataset.page = pageNum.toString();
+            next.dataset.page = pageNum.toString();
             buildPage(entries)
-        })
-    }
+        }
+    })
 })
 
 next.addEventListener('click', () => {
-    if (pageNumber+1 !== lastPage) {
-        getJSON(pageNumber + 1).then(entries => {
+    let pageNum = parseInt(next.dataset.page);
+    pageNum += 1;
+    getJSON(pageNum).then(entries => {
+        if (entries.detail !== 'Not found') {
+            console.log(entries);
             tableBody.textContent = '';
             listDiv.textContent = '';
-            pageNumber += 1;
+            prev.dataset.page = pageNum.toString();
+            next.dataset.page = pageNum.toString();
             buildPage(entries)
-        })
-    }
+        }
+    })
 })
