@@ -13,6 +13,21 @@ body {
     color: black;
 }
 
+button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: 1px solid #75a882;
+    cursor:pointer;
+    overflow: hidden;
+    outline: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #75a882;
+    transition: 0.5s;
+}
+
 .navbar-custom .navbar-nav .nav-link:hover {
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px;
