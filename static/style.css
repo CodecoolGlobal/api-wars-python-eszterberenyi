@@ -22,7 +22,8 @@ body {
 
 #table-padding {
     padding-top: 20px;
-    padding-right: 40px;
+    padding-left: 60px;
+    padding-right: 80px;
 }
 
 table th {
@@ -36,4 +37,15 @@ tr>th {
 
 tr {
     border-bottom: 2px solid black !important;
+}
+
+
+p {
+    border-bottom: 1px dashed #333;
+    padding-top: 0.15em;
+    padding-bottom: 0.15em;
+}
+
+.inactive {
+    display: none;
 }
