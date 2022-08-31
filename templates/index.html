@@ -32,8 +32,8 @@
         <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" id="prev" data-page="2">Previous</button>
         <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" id="next" data-page="1">Next</button>
 </div>
-<div id="table-padding">
-    <table class="table table-hover m-3" id="my-table">
+<div class="table-padding">
+    <table class="table table-hover m-3" id="planets-table">
         <thead>
             <tr>
                 <th scope="col">Name</th>
@@ -46,10 +46,34 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="planets-tbody">
         </tbody>
     </table>
     <div id="small-window-list" class="inactive">
+    </div>
+</div>
+<div class="modal inactive" id="residents-modal">
+    <div class="modal-content">
+        <span class="close">&times</span>
+        <div class="table-padding">
+            <table class="table table-hover m-3" id="modal-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Height</th>
+                        <th scope="col">Weight</th>
+                        <th scope="col">Skin color</th>
+                        <th scope="col">Hair color</th>
+                        <th scope="col">Eye color</th>
+                        <th scope="col">Birth year</th>
+                        <th scope="col">Gender</th>
+                    </tr>
+                </thead>
+                <tbody id="modal-table-body">
+                </tbody>
+            </table>
+        </div>
+        <button type="button" id="close-modal-btn">Close</button>
     </div>
 </div>
 </body>
