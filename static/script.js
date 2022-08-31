@@ -3,6 +3,9 @@ const listDiv = document.querySelector('#small-window-list');
 const prev = document.querySelector('#prev');
 const next = document.querySelector('#next');
 
+nextPrevButtons(prev);
+nextPrevButtons(next);
+
 window.addEventListener('resize', function(event){
     if (window.innerWidth < 990) {
         listDiv.classList.remove('inactive');
@@ -30,7 +33,7 @@ function checkLength(arr, buttonType) {
         return `<button type="button" className="btn btn-outline-dark residents-btn" data-mdb-ripple-color="dark">${arr.length} resident(s)</button>`;
     }
     else if (arr.length !== 0 && buttonType === 'vote') {
-        return `<button>${arr.length} resident(s)</button>`
+        return `<button class="residents-btn">${arr.length} resident(s)</button>`
     } else {
         return 'No known residents';
     }
@@ -62,7 +65,7 @@ function buildPage(entries) {
             <p>${planet.surface_water !== 'unknown' ? planet.surface_water + '%' : 'unknown'}</p>
             <p>${planet.population !== 'unknown' ? Number(planet.population).toLocaleString() + ' people' : 'unknown'}</p>
             <p>${checkLength(planet.residents, 'vote')}</p>
-            <p><button>Vote</button></p>
+            <p><button class="vote-btn">Vote</button></p>
             <p></p>
             `
         }
@@ -77,12 +80,17 @@ getJSON().then(entries => {
 })
 
 
-prev.addEventListener('click', (e) => {
+function nextPrevButtons(type) {
+    type.addEventListener('click', (e) => {
     if(e.detail > 1) {
         return;
     } else {
-        let pageNum = parseInt(prev.dataset.page);
-        pageNum -= 1;
+        let pageNum = parseInt(type.dataset.page);
+        if (type === prev) {
+            pageNum -= 1;
+        } else {
+            pageNum += 1;
+        }
         getJSON(pageNum).then(entries => {
             if (entries.detail !== 'Not found') {
                 tableBody.textContent = '';
@@ -94,22 +102,4 @@ prev.addEventListener('click', (e) => {
         })
     }
 })
-
-next.addEventListener('click', (e) => {
-    if(e.detail > 1) {
-        return;
-    } else {
-        let pageNum = parseInt(next.dataset.page);
-        pageNum += 1;
-        getJSON(pageNum).then(entries => {
-            if (entries.detail !== 'Not found') {
-                console.log(entries);
-                tableBody.textContent = '';
-                listDiv.textContent = '';
-                prev.dataset.page = pageNum.toString();
-                next.dataset.page = pageNum.toString();
-                buildPage(entries)
-            }
-        })
-    }
-})
+}
