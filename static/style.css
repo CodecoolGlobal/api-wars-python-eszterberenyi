@@ -46,12 +46,12 @@ table th {
 }
 
 tr>th {
-    border-top: 2px solid black !important;
-    border-bottom: 2px solid black !important;
+    border-top: 3px solid black !important;
+    border-bottom: 3px solid black !important;
 }
 
-tr {
-    border-bottom: 2px solid black !important;
+tbody>tr {
+    border-bottom: 3px dotted black !important;
 }
 
 
