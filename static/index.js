@@ -4,17 +4,58 @@ const listDiv2 = document.querySelector('#small-window-list2');
 const prev = document.querySelector('#prev');
 const next = document.querySelector('#next');
 const closeButton = document.querySelector('#close-modal-btn');
-const modal = document.querySelector('#residents-modal');
+const modalResidents = document.querySelector('#residents-modal');
 const modalTableBody = document.querySelector('#modal-table-body');
 const modalTableTitle = document.querySelector("#modal-table-title");
+const modalRegister = document.querySelector('#user-register-modal');
+const modalLogin = document.querySelector('#user-login-modal');
+const registrationBtn = document.querySelector('#registration');
+const registrationForm = document.querySelector('#registration-form');
+const loginBtn = document.querySelector('#login');
+const logoutBtn = document.querySelector('#logout')
+
 
 getJSON().then(entries => {
     buildPage(entries);
 })
 
+
 nextPrevButtons(prev);
 nextPrevButtons(next);
 
+// registrationBtn.addEventListener('click', () => {
+//     let inputFieldUsername = document.querySelector('#username-register');
+//     let inputFieldPassword = document.querySelector('#password-register');
+//     let registerBtn = document.querySelector('#register-btn');
+//     modalRegister.classList.remove('inactive');
+//     registerBtn.addEventListener('click', () => {
+//         if (inputFieldUsername.value === '') {
+//             inputFieldUsername.setAttribute('placeholder', 'Please provide a username')
+//         }
+//         if (inputFieldPassword.value === '') {
+//             inputFieldPassword.setAttribute('placeholder', 'Please provide a password')
+//         }
+//     })
+// });
+
+// registrationForm.addEventListener('submit', () => {
+//     getResponse().then(response => {
+//     console.log(response);
+//     })
+// })
+//
+// async function getResponse() {
+//     const response = await fetch('/');
+//     return response.json()
+// }
+
+//
+// loginBtn.addEventListener('click', () => {
+//     const pathArray = window.location.pathname.split('/');
+//     if (pathArray.includes('login')) {
+//         modalLogin.classList.remove('inactive');
+//     }
+// })
 
 window.addEventListener('resize', function (event) {
     if (window.innerWidth < 990) {
@@ -33,10 +74,10 @@ window.addEventListener('resize', function (event) {
 });
 
 
-closeButton.addEventListener('click', () => modal.classList.add('inactive'));
+closeButton.addEventListener('click', () => modalResidents.classList.add('inactive'));
 window.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        modal.classList.add('inactive');
+    if (e.target === modalResidents || e.target === modalRegister) {
+        modalResidents.classList.add('inactive');
     }
 })
 
@@ -55,7 +96,7 @@ async function getJSON(pageNum = 1) {
 function createButton(arr, buttonType) {
     if (arr.length !== 0 && buttonType === 'residents') {
         return `<button type="button" className="btn btn-outline-dark residents-btn" data-mdb-ripple-color="dark">${arr.length} resident(s)</button>`;
-    } else if (arr.length !== 0 && buttonType === 'vote') {
+    } else if (arr.length !== 0 && buttonType === 'residentsList') {
         return `<button class="residents-btn">${arr.length} resident(s)</button>`
     } else {
         return 'No known residents';
@@ -87,7 +128,7 @@ function buildPage(entries) {
             <p>Terrain: ${planet.terrain}</p>
             <p>${planet.surface_water !== 'unknown' ? 'Surface water: ' + planet.surface_water + '%' : 'Surface water: unknown'}</p>
             <p>${planet.population !== 'unknown' ? 'Population: ' + Number(planet.population).toLocaleString() + ' people' : 'Population: unknown'}</p>
-            <p class="residents-btnTd">${createButton(planet.residents, 'vote')}</p>
+            <p class="residents-btnTd">${createButton(planet.residents, 'residentsList')}</p>
             <p><button class="vote-btn">Vote</button></p>
             <p></p>
             `
@@ -102,7 +143,7 @@ function buildPage(entries) {
 
 function listenerToBuildModal(tagType, childNum, residents, planetName) {
     tagType.querySelector(`.residents-btnTd:nth-last-child(${childNum})>button`).addEventListener('click', () => {
-        buildModal(residents, planetName);
+        buildModalResidents(residents, planetName);
     });
 }
 
@@ -153,9 +194,9 @@ async function gatherResidents(residents) {
     return residentData
 }
 
-async function buildModal(residents, planetName) {
+async function buildModalResidents(residents, planetName) {
     modalTableBody.textContent = '';
-    modal.classList.remove("inactive");
+    modalResidents.classList.remove("inactive");
     const residentData = await gatherResidents(residents);
     modalTableTitle.textContent = `Resident(s) of: ${planetName}`;
     residentData.forEach((resident) => {
@@ -183,11 +224,15 @@ async function buildModal(residents, planetName) {
 }
 
 
-function createAndAppendNode(tagName, parentNode, tagContent) {
+function buildModalUserFeatures(feature) {
+
+}
+
+function createAndAppendNode(tagName, parentNode, tagContent, className) {
     let node = document.createElement(tagName);
     node.textContent = tagContent;
+    node.classList.add(className);
     parentNode.append(node);
     return node;
 }
-
 

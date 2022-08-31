@@ -62,7 +62,7 @@ p {
 
 .modal {
     display: flex;
-    position: fixed;
+    /*position: fixed;*/
     z-index: 1;
     top: 0;
     left: 0;
@@ -99,10 +99,43 @@ p {
     float: right;
 }
 
+.modal-content.form {
+    display: flex;
+    background-color: papayawhip;
+    justify-content: center;
+    text-align: center;
+    font-size: 20px;
+    margin: 20% auto;
+    border: 1px solid #888;
+    overflow: auto;
+    width: 20%;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+input {
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input:focus::placeholder {
+  color: transparent;
+}
+
+
+button[type=submit] {
+    border: 1px solid black;
+    margin-top: 20px;
+}
+
+button[type=submit]:hover {
+    background-color: rgba(211,195,168,1);
+    transition: 0.5s;
+}
+
 .inactive {
     display: none;
 }
 
-.hidden {
-    visibility: hidden;
-}
