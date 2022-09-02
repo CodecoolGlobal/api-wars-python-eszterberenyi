@@ -4,6 +4,7 @@
 {% block content %}
 <div class="modal" id="user-register-modal">
     <div class="modal-content form">
+        <span class="inactive" id="message">Username already taken, please choose a different one</span>
         <form action='{{ url_for('register')}}' method="POST" enctype="multipart/form-data" id="registration-form">
             <label for="username-register"> Username </label>
             <input type="text" id="username-register" name='username-register'  minlength="5" maxlength="10" required>
