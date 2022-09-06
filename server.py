@@ -21,7 +21,7 @@ def register():
         hashed_password = hashing.hash_password(request.form.get('password-register'))
         try:
             data_manager.add_user(request.form.get('username-register'), hashed_password)
-            session['username'] = request.form.get('username-register')
+            # session['username'] = request.form.get('username-register')
             return redirect(url_for('login'))
         except UniqueViolation:
             response = 'unsuccessful'
@@ -33,12 +33,10 @@ def register():
 def login():
     if request.method == 'POST':
         user_data = data_manager.get_user(request.form.get('username-login'))
-        try:
-            user_data.get(request.form.get('username-login')) and hashing.verify_password(request.form.get('password-login'), user_data.get('password'))
+        if user_data is not None and hashing.verify_password(request.form.get('password-login'), user_data.get('password')):
             session['username'] = request.form.get('username-login')
             return redirect(url_for('index'))
-        except AttributeError:
-            return redirect(url_for('login', attempt='unsuccessful'))
+        return redirect(url_for('login', attempt='unsuccessful'))
     return render_template('login.html')
 
 
